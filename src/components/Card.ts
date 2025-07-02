@@ -1,7 +1,7 @@
-import Span from "../utils/dom/Span.ts"
-import Div from "../utils/dom/Div.ts"
+import { Span } from "../utils/dom/Span.ts"
+import { Div } from "../utils/dom/Div.ts"
 
-const Card = (id: string, text: string, logo: string, value: string | number): HTMLElement => {
+const card = (id: string, text: string, logo: string, value: string | number): HTMLElement => {
   const card: HTMLDivElement = Div("", { class: "card" });
   const span: HTMLSpanElement = Span(value.toString(), { id });
 
@@ -10,4 +10,4 @@ const Card = (id: string, text: string, logo: string, value: string | number): H
   return card
 }
 
-export default Card
+export { card as Card }

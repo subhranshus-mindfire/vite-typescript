@@ -1,9 +1,9 @@
-import ApplicationCard from './ApplicationCard.ts';
-import ApplicationTable from './ApplicationTable.ts';
+import { ApplicationCard } from './ApplicationCard.ts';
+import { ApplicationTable } from './ApplicationTable.ts';
 import { getState, observe } from '../app.state.ts';
 import type { Application } from '../utils/types/types.ts';
 
-const Applications = (): HTMLElement | void => {
+const applications = (): HTMLElement | void => {
   const container: HTMLElement = document.createElement('div');
   if (!(container)) return
   container.id = 'applicationTableWrapper';
@@ -34,4 +34,4 @@ const Applications = (): HTMLElement | void => {
   return container;
 };
 
-export default Applications;
+export { applications as Applications };

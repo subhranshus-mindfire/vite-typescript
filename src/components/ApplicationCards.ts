@@ -1,8 +1,8 @@
 import { getState } from '../app.state.ts';
-import ApplicationCard from './ApplicationCard.ts';
+import { ApplicationCard } from './ApplicationCard.ts';
 import type { Application } from '../utils/types/types.ts';
 
-function ApplicationCards(): HTMLUListElement {
+function applicationCards(): HTMLUListElement {
   const list: HTMLUListElement = document.createElement('ul');
   list.id = 'applicationTable';
 
@@ -19,4 +19,4 @@ function ApplicationCards(): HTMLUListElement {
   return list;
 }
 
-export default ApplicationCards;
+export { applicationCards as ApplicationCards };

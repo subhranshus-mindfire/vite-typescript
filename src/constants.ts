@@ -1,4 +1,4 @@
-const JOB_ROLES = [
+const jobRoles = [
   'Frontend Developer',
   'Backend Developer',
   'Fullstack Developer',
@@ -9,8 +9,8 @@ const JOB_ROLES = [
   'Associate Software Engineer'
 ] as const
 
-type JobRole = typeof JOB_ROLES[number];
+type JobRole = typeof jobRoles[number];
 
-export { JOB_ROLES };
+export { jobRoles as JOB_ROLES };
 export type { JobRole };
 

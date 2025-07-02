@@ -1,8 +1,8 @@
-import Div from "../utils/dom/Div.ts";
-import ApplicationsView from "./ApplicationView";
-import Form from "./Form";
+import { Div } from "../utils/dom/Div.ts";
+import { ApplicationsView } from "./ApplicationView";
+import { Form } from "./Form";
 
-const Hero = (): HTMLDivElement => {
+const hero = (): HTMLDivElement => {
   const hero: HTMLDivElement = Div("", { class: "grid halfs gap-2" });
   const formElement = Form();
   const applicationsElement = ApplicationsView();
@@ -12,4 +12,4 @@ const Hero = (): HTMLDivElement => {
   return hero;
 };
 
-export default Hero;
+export { hero as Hero };

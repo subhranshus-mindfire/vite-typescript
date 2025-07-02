@@ -6,7 +6,7 @@ interface Attribute {
 };
 
 
-const Div = (value: string = "", attributes: Attribute = {}, childs: HTMLElement[] = []): HTMLDivElement => {
+const div = (value: string = "", attributes: Attribute = {}, childs: HTMLElement[] = []): HTMLDivElement => {
   const div: HTMLDivElement = document.createElement("div");
   div.innerHTML = value;
 
@@ -21,4 +21,4 @@ const Div = (value: string = "", attributes: Attribute = {}, childs: HTMLElement
   return div;
 };
 
-export default Div;
+export { div as Div };

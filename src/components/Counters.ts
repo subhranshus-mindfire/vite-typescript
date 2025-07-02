@@ -1,5 +1,5 @@
 import { getState, observe } from "../app.state.ts";
-import Card from "./Card";
+import { Card } from "./Card";
 
 interface CardItem {
   id: string;
@@ -8,7 +8,7 @@ interface CardItem {
   value: number;
 }
 
-const Counters = (): HTMLDivElement => {
+const counters = (): HTMLDivElement => {
   const counters: HTMLDivElement = document.createElement("div");
   counters.classList.add("flex", "statuses", "justify-content-evenly");
 
@@ -66,4 +66,4 @@ const Counters = (): HTMLDivElement => {
   return counters;
 };
 
-export default Counters;
+export { counters as Counters };

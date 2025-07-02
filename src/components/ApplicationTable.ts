@@ -3,7 +3,7 @@ import { populateForm } from '../utils/dom/handler.ts';
 import { showModal } from './Modal.ts';
 import type { Application } from '../utils/types/types.ts';
 
-function ApplicationTable(applications: Application[]): HTMLTableElement {
+function applicationTable(applications: Application[]): HTMLTableElement {
   const table: HTMLTableElement = document.createElement('table');
   table.classList.add('application-table');
   table.setAttribute('align', 'center');
@@ -65,4 +65,4 @@ function ApplicationTable(applications: Application[]): HTMLTableElement {
   return table;
 }
 
-export default ApplicationTable;
+export { applicationTable as ApplicationTable };

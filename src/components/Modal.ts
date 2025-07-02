@@ -1,10 +1,10 @@
 import { getState, setState } from "../app.state.ts";
 import { saveToStorage } from "../app.storage.ts";
-import Div from "../utils/dom/Div.ts";
+import { Div } from "../utils/dom/Div.ts";
 import { showAlert } from "./Alert";
 import type { Application } from "../utils/types/types";
 
-const Modal = (): HTMLDivElement => {
+const modal = (): HTMLDivElement => {
   const modal: HTMLDivElement = Div("", { id: "customModal", class: "custom-modal hidden" });
 
   modal.innerHTML = `
@@ -61,4 +61,4 @@ export function showModal(message: string): void {
   }
 }
 
-export default Modal;
+export { modal as Modal };

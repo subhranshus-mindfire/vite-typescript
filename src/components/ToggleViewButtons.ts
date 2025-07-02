@@ -1,6 +1,6 @@
 import { getState, observe, setState } from "../app.state.ts";
 
-const ToggleViewButtons = (): HTMLDivElement => {
+const toggleViewButtons = (): HTMLDivElement => {
   if (!getState("viewType")) setState("viewType", "grid");
 
   const wrapper: HTMLDivElement = document.createElement("div");
@@ -29,4 +29,4 @@ const ToggleViewButtons = (): HTMLDivElement => {
   return wrapper;
 };
 
-export default ToggleViewButtons;
+export { toggleViewButtons as ToggleViewButtons };

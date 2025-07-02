@@ -1,5 +1,5 @@
 import { JOB_ROLES } from "../constants.ts";
-import Div from "../utils/dom/Div.ts";
+import { Div } from "../utils/dom/Div.ts";
 import { renderJobRoleSuggestions } from "./JobRoleSuggestion.ts";
 import { setState, getState } from "../app.state.ts";
 import { saveToStorage } from "../app.storage.ts";
@@ -10,7 +10,7 @@ import type { Application, JobType, JobStatus } from "../utils/types/types";
 // Form data without ID (since we assign it on submit)
 type ApplicationFormData = Omit<Application, "id">;
 
-const Form = (): HTMLDivElement => {
+const form = (): HTMLDivElement => {
   function handleJobTypeChange(formWrapper: HTMLElement): void {
     const type = (formWrapper.querySelector('#jobType') as HTMLSelectElement).value as JobType;
     const locationField = formWrapper.querySelector('#location') as HTMLDivElement;
@@ -169,4 +169,4 @@ const Form = (): HTMLDivElement => {
   return formWrapper;
 };
 
-export default Form;
+export { form as Form };

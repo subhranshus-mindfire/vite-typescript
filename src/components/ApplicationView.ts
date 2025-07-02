@@ -1,8 +1,8 @@
-import Div from "../utils/dom/Div.ts";
-import Applications from "./Applications.ts";
-import ToggleViewButtons from "./ToggleViewButtons.ts";
+import { Div } from "../utils/dom/Div.ts";
+import { Applications } from "./Applications.ts";
+import { ToggleViewButtons } from "./ToggleViewButtons.ts";
 
-const ApplicationsView = () => {
+const applicationsView = () => {
   const wrapper: HTMLDivElement = Div("", { class: "right" });
   const heading: HTMLHeadingElement = document.createElement("h2");
 
@@ -20,4 +20,4 @@ const ApplicationsView = () => {
   return wrapper;
 };
 
-export default ApplicationsView;
+export { applicationsView as ApplicationsView };

@@ -1,8 +1,8 @@
-import Alert from './Alert.ts';
-import Counters from './Counters.ts';
-import Header from "./Header.ts";
-import Hero from './Hero.ts';
-import Modal from './Modal.ts'
+import { Alert } from './Alert.ts';
+import { Counters } from './Counters.ts';
+import { Header } from "./Header.ts";
+import { Hero } from './Hero.ts';
+import { Modal } from './Modal.ts'
 
 export function renderApp() {
   const root: HTMLElement | null = document.getElementById('app');

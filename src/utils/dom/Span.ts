@@ -5,7 +5,7 @@ interface Attribute {
   [key: string]: string | undefined;
 }
 
-const Span = (value: string = "", attributes: Attribute = {}): HTMLSpanElement => {
+const span = (value: string = "", attributes: Attribute = {}): HTMLSpanElement => {
   const span: HTMLSpanElement = document.createElement("span");
   span.innerHTML = value;
 
@@ -18,4 +18,4 @@ const Span = (value: string = "", attributes: Attribute = {}): HTMLSpanElement =
   return span;
 };
 
-export default Span;
+export { span as Span };

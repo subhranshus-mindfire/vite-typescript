@@ -3,7 +3,7 @@ import { populateForm } from '../utils/dom/handler.ts';
 import type { Application } from '../utils/types/types.ts';
 import { showModal } from './Modal.ts';
 
-function ApplicationCard(application: Application, index: number): HTMLLIElement {
+function applicationCard(application: Application, index: number): HTMLLIElement {
   const li: HTMLLIElement = document.createElement('li');
   li.className = 'application-card';
   li.id = `app-${index}`;
@@ -59,4 +59,4 @@ function ApplicationCard(application: Application, index: number): HTMLLIElement
   return li;
 }
 
-export default ApplicationCard;
+export { applicationCard as ApplicationCard };

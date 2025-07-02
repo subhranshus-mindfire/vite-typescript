@@ -1,7 +1,7 @@
 
-import Div from '../utils/dom/Div.ts'
+import { Div } from '../utils/dom/Div.ts'
 
-const Alert = (): HTMLElement => {
+const alert = (): HTMLElement => {
   const alertBox: HTMLElement = Div("", { "id": "customAlert", "class": "custom-alert hidden" })
   alertBox.className = `custom-alert success`;
   return alertBox;
@@ -22,4 +22,4 @@ export function showAlert(message: string): void {
     alertEl.classList.remove('show');
   }, 3000);
 }
-export default Alert
+export { alert as Alert }
