@@ -1,59 +1,27 @@
-// import { saveToStorage } from "./app.storage";
-// import { renderApp } from "./components/App";
 
-// export const state = {
-//   applications: [],
-//   view: "",
-//   isAlertVisible: false,
+type State = Record<string, any>;
+type Listener = () => void;
+type ListenerMap = Record<string, Listener[]>;
 
-//   setApplications(apps) {
-//     this.applications = apps;
-//     saveToStorage("applications", apps)
-//     renderApp();
-//   },
+const state: State = {};
+const listeners: ListenerMap = {};
 
-//   setView(view) {
-//     if (this.view !== view) {
-//       this.view = view;
-//       renderApp();
-//     }
-//   },
-
-//   setAlert(value) {
-//     if (this.isAlertVisible !== value) {
-//       this.isAlertVisible = value;
-//       renderApp();
-//     }
-//   },
-
-// };
-
-const state = {};
-const listeners = {};
-
-export function getState(key) {
+export function getState<T = any>(key: string): T | undefined {
   return state[key];
 }
 
-export function setState(key, value) {
+export function setState<T = any>(key: string, value: T): void {
   state[key] = value;
-  console.log(state, listeners)
 
   if (listeners[key]) {
-    listeners[key].forEach((func) => {
-      func()
-    }
-    );
+    listeners[key].forEach(listener => listener());
   }
 }
 
-export function observe(key, func) {
+export function observe(key: string, func: Listener): void {
   if (!listeners[key]) {
     listeners[key] = [func];
-  }
-  else if (listeners[key] == func)
-    return
-  else {
+  } else if (!listeners[key].includes(func)) {
     listeners[key].push(func);
   }
 }

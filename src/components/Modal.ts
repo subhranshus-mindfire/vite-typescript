@@ -1,10 +1,11 @@
-import { getState, setState } from "../app.state";
-import { saveToStorage } from "../app.storage";
-import Div from "../utils/dom/Div";
+import { getState, setState } from "../app.state.ts";
+import { saveToStorage } from "../app.storage.ts";
+import Div from "../utils/dom/Div.ts";
 import { showAlert } from "./Alert";
+import type { Application } from "../utils/types/types";
 
-const Modal = () => {
-  const modal = Div("", { id: "customModal", class: "custom-modal hidden" });
+const Modal = (): HTMLDivElement => {
+  const modal: HTMLDivElement = Div("", { id: "customModal", class: "custom-modal hidden" });
 
   modal.innerHTML = `
     <div class="modal-content">
@@ -16,39 +17,48 @@ const Modal = () => {
     </div>
   `;
 
-  function hideModal() {
+  function hideModal(): void {
     const modal = document.getElementById("customModal");
-    if (modal) modal.classList.add("hidden");
+    if (modal instanceof HTMLElement) {
+      modal.classList.add("hidden");
+    }
   }
 
-  function deleteApplication() {
-    console.log("hii")
-    const apps = getState("applications") || [];
-    const index = getState("deleteIndex")
+  function deleteApplication(): void {
+    const apps = getState("applications") as Application[] || [];
+    const index = getState("deleteIndex") as number;
 
-    apps.splice(index, 1);
-    setState("applications", apps);
-    saveToStorage("applications", apps)
-    showAlert("Deleted Successfully")
+    if (typeof index === "number" && index >= 0 && index < apps.length) {
+      apps.splice(index, 1);
+      setState("applications", apps);
+      saveToStorage("applications", apps);
+      showAlert("Deleted Successfully");
+    }
   }
 
-  modal.querySelector("#modal-confirm").onclick = () => {
-    deleteApplication()
-    hideModal();
-  };
+  const confirmBtn = modal.querySelector("#modal-confirm") as HTMLButtonElement | null;
+  const cancelBtn = modal.querySelector("#modal-cancel") as HTMLButtonElement | null;
 
-  modal.querySelector("#modal-cancel").onclick = () => {
+  confirmBtn?.addEventListener("click", () => {
+    deleteApplication();
     hideModal();
-  };
+  });
+
+  cancelBtn?.addEventListener("click", () => {
+    hideModal();
+  });
 
   return modal;
 };
 
-export function showModal(message) {
-  let modal = document.getElementById("customModal");
-  document.getElementById("modal-message").textContent = message;
-  modal.classList.remove("hidden");
-}
+export function showModal(message: string): void {
+  const modal = document.getElementById("customModal") as HTMLElement | null;
+  const messageBox = document.getElementById("modal-message") as HTMLElement | null;
 
+  if (modal && messageBox) {
+    messageBox.textContent = message;
+    modal.classList.remove("hidden");
+  }
+}
 
 export default Modal;

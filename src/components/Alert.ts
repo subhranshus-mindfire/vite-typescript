@@ -1,22 +1,25 @@
 
-import Div from '../utils/dom/Div'
+import Div from '../utils/dom/Div.ts'
 
-const Alert = () => {
-  const alertBox = Div("", { "id": "customAlert", "class": "custom-alert hidden" })
+const Alert = (): HTMLElement => {
+  const alertBox: HTMLElement = Div("", { "id": "customAlert", "class": "custom-alert hidden" })
   alertBox.className = `custom-alert success`;
   return alertBox;
 }
 
-export function showAlert(message) {
-  console.log("alert Called")
-  document.getElementById("customAlert").classList.add("show")
-  document.getElementById("customAlert").classList.remove("hidden")
-  document.getElementById("customAlert").textContent = message;
+export function showAlert(message: string): void {
+  console.log('alert Called');
+
+  const alertEl = document.getElementById('customAlert');
+  if (!alertEl) return;
+
+  alertEl.classList.add('show');
+  alertEl.classList.remove('hidden');
+  alertEl.textContent = message;
 
   setTimeout(() => {
-    document.getElementById("customAlert").classList.add("hidden")
-    document.getElementById("customAlert").classList.remove("show")
-  }, 3000)
+    alertEl.classList.add('hidden');
+    alertEl.classList.remove('show');
+  }, 3000);
 }
-
 export default Alert

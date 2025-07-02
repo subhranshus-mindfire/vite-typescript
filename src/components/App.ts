@@ -5,21 +5,17 @@ import Hero from './Hero.ts';
 import Modal from './Modal.ts'
 
 export function renderApp() {
-  const root = document.getElementById('app');
-  if (root != undefined) root.innerHTML = '';
+  const root: HTMLElement | null = document.getElementById('app');
+  if (root === null) return
 
-  const layout = document.createElement('div');
+  root.innerHTML = '';
+  const layout: HTMLElement | null = document.createElement('div');
   layout.className = 'app container';
 
   layout.appendChild(Header());
   layout.appendChild(Counters());
   layout.appendChild(Hero());
-
-  // if (getState("toast")) {
   layout.append(Alert());
   layout.append(Modal());
-
-  // }
-
-  if (root != undefined) root.appendChild(layout);
+  root.appendChild(layout);
 }

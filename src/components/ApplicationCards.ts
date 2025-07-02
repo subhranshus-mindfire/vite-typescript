@@ -1,15 +1,19 @@
 import { getState } from '../app.state.ts';
 import ApplicationCard from './ApplicationCard.ts';
+import type { Application } from '../utils/types/types.ts';
 
-function ApplicationCards() {
-  const list = document.createElement('ul');
+function ApplicationCards(): HTMLUListElement {
+  const list: HTMLUListElement = document.createElement('ul');
   list.id = 'applicationTable';
 
-  const viewType = getState("viewType") || "grid";
+  const viewType: string = getState("viewType") || "grid";
   list.className = viewType === "row" ? "flex" : "grid";
 
-  getState("applications")?.forEach((app, index) => {
-    list.appendChild(ApplicationCard(app, index));
+  const applications: Application[] = getState("applications") || [];
+
+  applications.forEach((app: Application, index: number) => {
+    const card = ApplicationCard(app, index);
+    if (card) list.appendChild(card);
   });
 
   return list;

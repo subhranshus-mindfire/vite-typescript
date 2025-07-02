@@ -1,20 +1,26 @@
-import { getState, observe } from "../app.state";
+import { getState, observe } from "../app.state.ts";
 import Card from "./Card";
 
-const Counters = () => {
+interface CardItem {
+  id: string;
+  text: string;
+  logo: string;
+  value: number;
+}
 
-  const counters = document.createElement("div");
+const Counters = (): HTMLDivElement => {
+  const counters: HTMLDivElement = document.createElement("div");
   counters.classList.add("flex", "statuses", "justify-content-evenly");
 
-  function render() {
+  function render(): void {
     const applications = getState("applications") || [];
 
-    counters.innerHTML = ``
+    counters.innerHTML = ``;
 
-    const statusCount = (status) =>
-      applications.filter((app) => app.jobStatus === status).length;
+    const statusCount = (status: string): number =>
+      applications.filter((app: { jobStatus: string }) => app.jobStatus === status).length;
 
-    const cards = [
+    const cards: CardItem[] = [
       {
         id: "totalApplications",
         text: "Applications",
@@ -47,15 +53,15 @@ const Counters = () => {
       },
     ];
 
-    cards.forEach(({ id, text, logo, value }) => {
-      counters.append(Card(id, text, logo, value));
+    cards.forEach(({ id, text, logo, value }: CardItem) => {
+      const card = Card(id, text, logo, value);
+      if (card) counters.appendChild(card);
     });
   }
 
+  render();
 
-  render()
-
-  observe("applications", render)
+  observe("applications", render);
 
   return counters;
 };

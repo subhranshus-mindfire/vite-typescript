@@ -7,6 +7,10 @@ const JOB_ROLES = [
   'Software Engineer',
   'SDE',
   'Associate Software Engineer'
-];
+] as const
 
-export { JOB_ROLES }
+type JobRole = typeof JOB_ROLES[number];
+
+export { JOB_ROLES };
+export type { JobRole };
+

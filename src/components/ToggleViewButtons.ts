@@ -1,32 +1,30 @@
-import { getState, observe, setState } from "../app.state";
+import { getState, observe, setState } from "../app.state.ts";
 
-const ToggleViewButtons = () => {
+const ToggleViewButtons = (): HTMLDivElement => {
   if (!getState("viewType")) setState("viewType", "grid");
 
-  const wrapper = document.createElement("div");
+  const wrapper: HTMLDivElement = document.createElement("div");
   wrapper.className = "toogle-btn";
 
-
-  function render() {
+  function render(): void {
     const viewType = getState("viewType");
 
-    console.log("Toggle View render Called", viewType)
+    console.log("Toggle View render Called", viewType);
+
     wrapper.innerHTML = `
-    <input type="button" value="Row" id="row-btn" class="${viewType === 'row' ? 'active-btn' : ''}">
-    <input type="button" value="Grid" id="grid-btn" class="${viewType === 'grid' ? 'active-btn' : ''}">
-  `;
+      <input type="button" value="Row" id="row-btn" class="${viewType === 'row' ? 'active-btn' : ''}">
+      <input type="button" value="Grid" id="grid-btn" class="${viewType === 'grid' ? 'active-btn' : ''}">
+    `;
 
-    wrapper.querySelector("#row-btn").addEventListener("click", () => {
-      setState("viewType", "row");
-    });
+    const rowBtn = wrapper.querySelector("#row-btn") as HTMLInputElement | null;
+    const gridBtn = wrapper.querySelector("#grid-btn") as HTMLInputElement | null;
 
-    wrapper.querySelector("#grid-btn").addEventListener("click", () => {
-      setState("viewType", "grid");
-    });
+    rowBtn?.addEventListener("click", () => setState("viewType", "row"));
+    gridBtn?.addEventListener("click", () => setState("viewType", "grid"));
   }
 
-  render()
-  observe("viewType", render)
+  render();
+  observe("viewType", render);
 
   return wrapper;
 };

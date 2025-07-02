@@ -1,14 +1,16 @@
 import ApplicationCard from './ApplicationCard.ts';
 import ApplicationTable from './ApplicationTable.ts';
 import { getState, observe } from '../app.state.ts';
+import type { Application } from '../utils/types/types.ts';
 
-const Applications = () => {
-  const container = document.createElement('div');
+const Applications = (): HTMLElement | void => {
+  const container: HTMLElement = document.createElement('div');
+  if (!(container)) return
   container.id = 'applicationTableWrapper';
 
-  const render = () => {
+  const render = (): void => {
     container.innerHTML = '';
-    const viewType = getState('viewType');
+    const viewType: string = getState('viewType');
     const applications = getState('applications') || [];
 
     if (viewType === 'row') {
@@ -17,7 +19,7 @@ const Applications = () => {
       const ul = document.createElement('ul');
       ul.id = 'applicationTable';
       ul.className = 'grid';
-      applications.forEach((app, index) => {
+      applications.forEach((app: Application, index: number) => {
         ul.appendChild(ApplicationCard(app, index));
       });
       container.appendChild(ul);

@@ -1,13 +1,14 @@
-import { setState } from '../app.state';
-import { populateForm } from '../utils/dom/handler';
-import { showModal } from './Modal';
+import { setState } from '../app.state.ts';
+import { populateForm } from '../utils/dom/handler.ts';
+import { showModal } from './Modal.ts';
+import type { Application } from '../utils/types/types.ts';
 
-function ApplicationTable(applications) {
-  const table = document.createElement('table');
+function ApplicationTable(applications: Application[]): HTMLTableElement {
+  const table: HTMLTableElement = document.createElement('table');
   table.classList.add('application-table');
   table.setAttribute('align', 'center');
 
-  const thead = document.createElement('thead');
+  const thead: HTMLTableSectionElement = document.createElement('thead');
   thead.innerHTML = `
     <tr>
       <th id='applicantName-header'>Applicant <i class="fa-solid fa-sort"></i></th>
@@ -20,10 +21,10 @@ function ApplicationTable(applications) {
   `;
   table.appendChild(thead);
 
-  const tbody = document.createElement('tbody');
+  const tbody: HTMLTableSectionElement = document.createElement('tbody');
 
-  applications.forEach((app, index) => {
-    const row = document.createElement('tr');
+  applications.forEach((app: Application, index: number) => {
+    const row: HTMLTableRowElement = document.createElement('tr');
     row.setAttribute("id", `app-${index}`);
 
     row.innerHTML = `
@@ -40,15 +41,22 @@ function ApplicationTable(applications) {
       </td>
     `;
 
-    row.querySelector(`#app-edit-${index}`).addEventListener("click", (e) => {
-      e.preventDefault();
-      populateForm(index, app);
-    });
+    const editBtn = row.querySelector(`#app-edit-${index}`) as HTMLAnchorElement | null;
+    const deleteBtn = row.querySelector(`#app-delete-${index}`) as HTMLAnchorElement | null;
 
-    row.querySelector(`#app-delete-${index}`).addEventListener("click", () => {
-      setState("deleteIndex", index);
-      showModal("Are you sure you want to delete this application?");
-    });
+    if (editBtn) {
+      editBtn.addEventListener("click", (e: MouseEvent) => {
+        e.preventDefault();
+        populateForm(index, app);
+      });
+    }
+
+    if (deleteBtn) {
+      deleteBtn.addEventListener("click", () => {
+        setState("deleteIndex", index);
+        showModal("Are you sure you want to delete this application?");
+      });
+    }
 
     tbody.appendChild(row);
   });

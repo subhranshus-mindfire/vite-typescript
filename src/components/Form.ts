@@ -1,101 +1,74 @@
-import { JOB_ROLES } from "../constants";
-import Div from "../utils/dom/Div";
-import { renderJobRoleSuggestions } from "./JobRoleSuggestion";
-import { setState, getState } from "../app.state";
-import { saveToStorage } from "../app.storage";
+import { JOB_ROLES } from "../constants.ts";
+import Div from "../utils/dom/Div.ts";
+import { renderJobRoleSuggestions } from "./JobRoleSuggestion.ts";
+import { setState, getState } from "../app.state.ts";
+import { saveToStorage } from "../app.storage.ts";
 import { showAlert } from "./Alert";
-import { resetForm } from "../utils/dom/handler";
+import { resetForm } from "../utils/dom/handler.ts";
+import type { Application, JobType, JobStatus } from "../utils/types/types";
 
-const Form = () => {
-  function handleJobTypeChange(formWrapper) {
-    console.log(formWrapper)
-    const type = formWrapper.querySelector('#jobType').value;
-    const locationField = formWrapper.querySelector('#location');
+// Form data without ID (since we assign it on submit)
+type ApplicationFormData = Omit<Application, "id">;
+
+const Form = (): HTMLDivElement => {
+  function handleJobTypeChange(formWrapper: HTMLElement): void {
+    const type = (formWrapper.querySelector('#jobType') as HTMLSelectElement).value as JobType;
+    const locationField = formWrapper.querySelector('#location') as HTMLDivElement;
 
     locationField.style.display = type === 'remote' ? 'none' : 'flex';
   }
 
-  function getFormData() {
+  function getFormData(): ApplicationFormData {
     return {
-      id: document.getElementById('applicationId').value,
-      applicantName: document.getElementById('applicantName').value,
-      companyName: document.getElementById('companyName').value,
-      jobRole: document.getElementById('jobRole').value,
-      jobType: document.getElementById('jobType').value,
-      location: document.getElementById('locationInput').value,
-      applicationDate: document.getElementById('applicationDate').value,
-      jobStatus: document.getElementById('jobStatus').value,
-      notes: document.getElementById('notes').value
+      applicantName: (document.getElementById('applicantName') as HTMLInputElement).value,
+      companyName: (document.getElementById('companyName') as HTMLInputElement).value,
+      jobRole: (document.getElementById('jobRole') as HTMLInputElement).value,
+      jobType: (document.getElementById('jobType') as HTMLSelectElement).value as JobType,
+      location: (document.getElementById('locationInput') as HTMLInputElement).value,
+      applicationDate: (document.getElementById('applicationDate') as HTMLInputElement).value,
+      jobStatus: (document.getElementById('jobStatus') as HTMLSelectElement).value as JobStatus,
+      notes: (document.getElementById('notes') as HTMLInputElement).value,
     };
   }
 
-  function validateForm(form) {
+  function validateForm(form: ApplicationFormData): boolean {
     let isValid = true;
 
-    if (!form.applicantName) {
-      document.querySelector('.applicantNameError').classList.remove('hidden');
-      isValid = false;
-    } else {
-      document.querySelector('.applicantNameError').classList.add('hidden');
-    }
+    const toggleError = (selector: string, condition: boolean) => {
+      const el = document.querySelector(selector);
+      if (el) el.classList.toggle('hidden', condition);
+      if (!condition) isValid = false;
+    };
 
-    if (!form.companyName) {
-      document.querySelector('.nameError').classList.remove('hidden');
-      isValid = false;
-    } else {
-      document.querySelector('.nameError').classList.add('hidden');
-    }
-
-    if (!form.jobRole) {
-      document.querySelector('.roleError').classList.remove('hidden');
-      isValid = false;
-    } else {
-      document.querySelector('.roleError').classList.add('hidden');
-    }
-
-    if (!form.jobType) {
-      document.querySelector('.jobtypeError').classList.remove('hidden');
-      isValid = false;
-    } else {
-      document.querySelector('.jobtypeError').classList.add('hidden');
-    }
-
-    if (form.jobType !== 'remote' && !form.location) {
-      document.querySelector('.locationError').classList.remove('hidden');
-      isValid = false;
-    } else {
-      document.querySelector('.locationError').classList.add('hidden');
-    }
-
-    if (!form.applicationDate) {
-      document.querySelector('.applicationdateError').classList.remove('hidden');
-      isValid = false;
-    } else {
-      document.querySelector('.applicationdateError').classList.add('hidden');
-    }
-
-    if (!form.jobStatus) {
-      document.querySelector('.statusError').classList.remove('hidden');
-      isValid = false;
-    } else {
-      document.querySelector('.statusError').classList.add('hidden');
-    }
+    toggleError('.applicantNameError', !!form.applicantName);
+    toggleError('.nameError', !!form.companyName);
+    toggleError('.roleError', !!form.jobRole);
+    toggleError('.jobtypeError', !!form.jobType);
+    toggleError('.locationError', form.jobType === 'remote' || !!form.location);
+    toggleError('.applicationdateError', !!form.applicationDate);
+    toggleError('.statusError', !!form.jobStatus);
 
     return isValid;
   }
 
-  function addApplication() {
-    const formData = getFormData()
+  function addApplication(): void {
+    const formData = getFormData();
     if (!validateForm(formData)) return;
 
-    formData.id = Date.now();
-    console.log("Hiii Before setState")
-    saveToStorage("applications", [...((getState("applications")) || []), formData])
-    setState("applications", [...((getState("applications")) || []), formData])
-    showAlert("Added Successfully")
-    resetForm()
-    console.log("first")
+    const newApplication: Application = {
+      id: Date.now().toString(),
+      ...formData,
+    };
+
+    const current = (getState("applications") as Application[]) || [];
+    const updated = [...current, newApplication];
+
+    saveToStorage("applications", updated);
+    setState("applications", updated);
+    showAlert("Added Successfully");
+    resetForm();
   }
+
   const form = document.createElement("div");
   form.className = "form bg-light";
 
@@ -166,33 +139,32 @@ const Form = () => {
     </div>
   `;
 
-  form.querySelector('#applicationDate').max = new Date().toISOString().split('T')[0];
+  (form.querySelector('#applicationDate') as HTMLInputElement).max = new Date().toISOString().split('T')[0];
 
-
-  const formWrapper = Div("", { "class": "left" });
+  const formWrapper = Div("", { class: "left" }) as HTMLDivElement;
   formWrapper.appendChild(form);
 
-  formWrapper.querySelector('#jobType').addEventListener('change', () => {
-    handleJobTypeChange(formWrapper)
+  (formWrapper.querySelector('#jobType') as HTMLSelectElement).addEventListener('change', () => {
+    handleJobTypeChange(formWrapper);
   });
 
-  const jobRoleInput = form.querySelector('#jobRole');
-  const autocompleteList = form.querySelector('#autocompleteRoles');
+  const jobRoleInput = form.querySelector('#jobRole') as HTMLInputElement;
+  const autocompleteList = form.querySelector('#autocompleteRoles') as HTMLUListElement;
 
   jobRoleInput.addEventListener('input', () => {
     renderJobRoleSuggestions(jobRoleInput.value, JOB_ROLES);
   });
 
-  document.addEventListener('click', (e) => {
-    if (!autocompleteList.contains(e.target) && e.target !== jobRoleInput) {
+  document.addEventListener('click', (e: MouseEvent) => {
+    if (!autocompleteList.contains(e.target as Node) && e.target !== jobRoleInput) {
       autocompleteList.classList.add('hidden');
     }
   });
 
-  formWrapper.querySelector("#submit").addEventListener("click", (event) => {
-    event.preventDefault()
-    addApplication()
-  })
+  (formWrapper.querySelector("#submit") as HTMLDivElement).addEventListener("click", (event: Event) => {
+    event.preventDefault();
+    addApplication();
+  });
 
   return formWrapper;
 };

@@ -1,12 +1,12 @@
-import { setState } from '../app.state';
-import { populateForm } from '../utils/dom/handler';
-import { showModal } from './Modal';
+import { setState } from '../app.state.ts';
+import { populateForm } from '../utils/dom/handler.ts';
+import type { Application } from '../utils/types/types.ts';
+import { showModal } from './Modal.ts';
 
-
-function ApplicationCard(application, index) {
-  const li = document.createElement('li');
+function ApplicationCard(application: Application, index: number): HTMLLIElement {
+  const li: HTMLLIElement = document.createElement('li');
   li.className = 'application-card';
-  li.setAttribute("id", `app-${index}`);
+  li.id = `app-${index}`;
 
   li.innerHTML = `
     <div class="application-card-header flex">
@@ -39,15 +39,22 @@ function ApplicationCard(application, index) {
     </div>
   `;
 
-  li.querySelector(`#app-edit-${index}`).addEventListener("click", (e) => {
-    e.preventDefault();
-    populateForm(index, application);
-  });
+  const editBtn = li.querySelector(`#app-edit-${index}`) as HTMLAnchorElement | null;
+  const deleteBtn = li.querySelector(`#app-delete-${index}`) as HTMLAnchorElement | null;
 
-  li.querySelector(`#app-delete-${index}`).addEventListener("click", () => {
-    setState("deleteIndex", index)
-    showModal(" Are You Sure To Delete ? ")
-  });
+  if (editBtn) {
+    editBtn.addEventListener("click", (e: MouseEvent) => {
+      e.preventDefault();
+      populateForm(index, application);
+    });
+  }
+
+  if (deleteBtn) {
+    deleteBtn.addEventListener("click", () => {
+      setState("deleteIndex", index);
+      showModal("Are you sure you want to delete?");
+    });
+  }
 
   return li;
 }

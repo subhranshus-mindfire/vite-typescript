@@ -1,8 +1,10 @@
-export function renderJobRoleSuggestions(input, jobRoles) {
-  const list = document.getElementById('autocompleteRoles');
+export function renderJobRoleSuggestions(input: string, jobRoles: string[]): void {
+  const list = document.getElementById('autocompleteRoles') as HTMLUListElement | null;
+  if (!list) return;
+
   list.innerHTML = '';
 
-  if (!input) {
+  if (!input.trim()) {
     list.classList.add('hidden');
     return;
   }
@@ -11,7 +13,7 @@ export function renderJobRoleSuggestions(input, jobRoles) {
     role.toLowerCase().includes(input.toLowerCase())
   );
 
-  if (!matches.length) {
+  if (matches.length === 0) {
     list.classList.add('hidden');
     return;
   }
@@ -20,7 +22,10 @@ export function renderJobRoleSuggestions(input, jobRoles) {
     const li = document.createElement('li');
     li.textContent = role;
     li.addEventListener('click', () => {
-      document.getElementById('jobRole').value = role;
+      const jobRoleInput = document.getElementById('jobRole') as HTMLInputElement | null;
+      if (jobRoleInput) {
+        jobRoleInput.value = role;
+      }
       list.innerHTML = '';
       list.classList.add('hidden');
     });
