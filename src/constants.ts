@@ -13,4 +13,6 @@ type JobRole = typeof jobRoles[number];
 
 export { jobRoles as JOB_ROLES };
 export type { JobRole };
+export const getJobRoles = (): string[] => [...jobRoles];
+
 

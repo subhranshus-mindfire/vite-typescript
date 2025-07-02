@@ -1,4 +1,4 @@
-import { JOB_ROLES } from "../constants.ts";
+import { getJobRoles } from "../constants.ts";
 import { Div } from "../utils/dom/Div.ts";
 import { renderJobRoleSuggestions } from "./JobRoleSuggestion.ts";
 import { setState, getState } from "../app.state.ts";
@@ -152,7 +152,7 @@ const form = (): HTMLDivElement => {
   const autocompleteList = form.querySelector('#autocompleteRoles') as HTMLUListElement;
 
   jobRoleInput.addEventListener('input', () => {
-    renderJobRoleSuggestions(jobRoleInput.value, JOB_ROLES);
+    renderJobRoleSuggestions(jobRoleInput.value, getJobRoles());
   });
 
   document.addEventListener('click', (e: MouseEvent) => {
