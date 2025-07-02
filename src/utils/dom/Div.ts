@@ -1,12 +1,5 @@
-interface Attribute {
-  class?: string;
-  id?: string;
-  href?: string;
-  src?: string;
-};
 
-
-const div = (value: string = "", attributes: Attribute = {}, childs: HTMLElement[] = []): HTMLDivElement => {
+const div = (value: string = "", attributes: Record<string, string> = {}, childs: HTMLElement[] = []): HTMLDivElement => {
   const div: HTMLDivElement = document.createElement("div");
   div.innerHTML = value;
 
