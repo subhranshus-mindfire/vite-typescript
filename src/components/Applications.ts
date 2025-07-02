@@ -10,7 +10,7 @@ const applications = (): HTMLElement | void => {
 
   const render = (): void => {
     container.innerHTML = '';
-    const viewType: string = getState('viewType');
+    const viewType: string | undefined = getState('viewType');
     const applications = getState('applications') || [];
 
     if (viewType === 'row') {
